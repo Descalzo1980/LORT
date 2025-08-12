@@ -11,7 +11,7 @@ struct SelectCurrency: View {
                 .ignoresSafeArea()
                 .background(.brown)
             VStack {
-                Text("Select the currency you are starting with:")
+                Text("Select the currency you are starting with: \(Currency.copperPenny.rawValue)")
                     .fontWeight(.bold)
                 
                 LazyVGrid(columns: [GridItem(),GridItem(),GridItem()]) {
