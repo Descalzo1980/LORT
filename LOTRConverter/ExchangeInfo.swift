@@ -25,7 +25,6 @@ struct ExchangeInfo: View {
                 ExchangeRate(leftImage: .silverpenny, text: "1 Silver Penny = 100 Copper Pennies", rightImage:.copperpenny)
                 Button("Done") {
                     dismiss()
-                    //print("Меня отменяют $dismiss")
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.brown.mix(with: .black, by: 0.2))
