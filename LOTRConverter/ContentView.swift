@@ -18,7 +18,6 @@ struct ContentView: View {
                 Text("Currency Exchange")
                     .font(.title)
                     .foregroundColor(.white)
-                //Spacer()
                 HStack {
                     VStack {
                         HStack {
@@ -39,8 +38,6 @@ struct ContentView: View {
                     Image(systemName: "equal")
                         .font(.largeTitle)
                         .foregroundStyle(.white)
-                    //.symbolEffect(.pulse)
-                    
                     VStack {
                         HStack {
                             Text("Gold Piece")
@@ -65,7 +62,6 @@ struct ContentView: View {
                     Spacer()
                     Button {
                         showExchangeInfo.toggle()
-
                     } label: {
                         Image(systemName: "info.circle.fill")
                             .font(.largeTitle)
@@ -74,6 +70,9 @@ struct ContentView: View {
                     .padding(.trailing)
                 }
             }
+        }
+        .sheet(isPresented: $showExchangeInfo) {
+            ExchangeInfo()
         }
     }
 }
