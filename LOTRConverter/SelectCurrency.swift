@@ -14,9 +14,9 @@ struct SelectCurrency: View {
                 Text("Select the currency you are starting with: \(Currency.copperPenny.rawValue)")
                     .fontWeight(.bold)
                 
-                LazyVGrid(columns: [GridItem(),GridItem(),GridItem()]) {
-                    ForEach(0..<5) { _ in
-                        CurrensyIcon(currencyImage: .copperpenny, currencyName: "Copper Penny")
+                LazyVGrid(columns: Array(repeating: GridItem(), count: 3)) {
+                    ForEach(Currency.allCases) { currency in
+                        CurrensyIcon(currencyImage: currency.image, currencyName: currency.name)
                     }
                 }
 
