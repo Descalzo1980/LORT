@@ -3,7 +3,8 @@ import SwiftUI
 
 struct SelectCurrency: View {
     @Environment(\.dismiss) var dismiss
-    @State var currency: Currency
+    @State var topCurrency: Currency
+    @State var bottomCurrency: Currency
     
     var body: some View {
         ZStack {
@@ -12,29 +13,15 @@ struct SelectCurrency: View {
                 .ignoresSafeArea()
                 .background(.brown)
             VStack {
-                Text("Select the currency you are starting with: \(Currency.copperPenny.rawValue)")
+                Text("Select the currency you are starting with: ")
                     .fontWeight(.bold)
                 
-                LazyVGrid(columns: Array(repeating: GridItem(), count: 3)) {
-                    ForEach(Currency.allCases) { item in
-                        CurrensyIcon(currencyImage: item.image, currencyName: item.name)
-                            .shadow(color: currency == currency ? .black : .clear, radius: 10)
-                            .overlay {
-                                if item == currency {
-                                    RoundedRectangle(cornerRadius: 25)
-                                        .stroke(lineWidth: 3)
-                                        .opacity(0.5)
-                                    
-                                }
-                            }.onTapGesture{
-                                self.currency = item
-                            }
-                    }
-                }
+                IconGrid(currency: topCurrency)
                 
                 Text("Select the currency you would like to convert to:")
                     .fontWeight(.bold)
-                
+                    .padding(.top)
+                IconGrid(currency: bottomCurrency)
                 Button("Done") {
                     dismiss()
                 }
@@ -46,10 +33,15 @@ struct SelectCurrency: View {
             }
             .padding()
             .multilineTextAlignment(.center)
+            .foregroundStyle(.black)
+        }
+        .onTapGesture{
+            print("SelectCurrency topCurrency : \(topCurrency)")
+            print("SelectCurrency bottomCurrency: \(bottomCurrency)")
         }
     }
 }
 
 #Preview {
-    SelectCurrency(currency: .silverPiece)
+    SelectCurrency(topCurrency: .silverPenny, bottomCurrency: .goldPenny)
 }
