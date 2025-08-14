@@ -3,10 +3,15 @@ import SwiftUI
 struct ContentView: View {
     @State var showExchangeInfo = false
     @State var showSelectCurrency = false
+    
     @State var leftAmount = ""
     @State var rightAmount = ""
+    
     @State var leftCurrency: Currency = .silverPiece
     @State var rightCurrency: Currency = .goldPiece
+    
+    @FocusState var leftTyping
+    @FocusState var rightTyping
     
     var body: some View {
         ZStack {
@@ -39,6 +44,12 @@ struct ContentView: View {
                         
                         TextField("Amount", text: $leftAmount)
                             .textFieldStyle(.roundedBorder)
+                            .focused($leftTyping)
+                            .onChange(of: leftAmount) {
+                                if leftTyping {
+                                    rightAmount = leftCurrency.convert(leftAmount, to: rightCurrency)
+                                }
+                            }
                     }
                     
                     Image(systemName: "equal")
@@ -60,7 +71,13 @@ struct ContentView: View {
                         }
                         TextField("Amount", text: $rightAmount)
                             .textFieldStyle(.roundedBorder)
+                            .focused($rightTyping)
                             .multilineTextAlignment(.trailing)
+                            .onChange(of: rightAmount) {
+                                if rightTyping {
+                                    leftAmount = rightCurrency.convert(rightAmount, to: leftCurrency)
+                                }
+                            }
                     }
                 }
                 .padding()

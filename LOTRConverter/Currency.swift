@@ -47,7 +47,7 @@ enum Currency: Double, CaseIterable, Identifiable {
         }
     }
     
-    func convert(amountString: String, to currensy: Currency) -> String {
+    func convert(_ amountString: String, to currensy: Currency) -> String {
         guard let doubleAmount = Double(amountString) else {
             return ""
         }
