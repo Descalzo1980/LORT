@@ -14,6 +14,7 @@ enum Currency: Double, CaseIterable, Identifiable {
     case silverPiece = 16
     case goldPenny = 4
     case goldPiece = 1
+    case mithrilPiece = 0.25
     
     var id: Currency { self }
     
@@ -29,6 +30,8 @@ enum Currency: Double, CaseIterable, Identifiable {
                 .goldpenny
         case .goldPiece:
                 .goldpiece
+        case .mithrilPiece:
+                .mithrilpiece
         }
     }
     
@@ -44,6 +47,8 @@ enum Currency: Double, CaseIterable, Identifiable {
             "Gold Penny"
         case .goldPiece:
             "Gold Piece"
+        case.mithrilPiece:
+            "Mithril Piece"
         }
     }
     

@@ -18,14 +18,14 @@ struct ExchangeRate: View {
             Image(leftImage)
                 .resizable()
                 .scaledToFit()
-                .frame(height: 33)
+                .frame(width: 33, height: 33)
             
             Text(text)
             
             Image(rightImage)
                 .resizable()
                 .scaledToFit()
-                .frame(height: 33)
+                .frame(width: 33, height: 33)
         }
     }
 }
