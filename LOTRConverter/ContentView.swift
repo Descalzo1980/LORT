@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct ContentView: View {
     @State var showExchangeInfo = false
@@ -13,11 +14,17 @@ struct ContentView: View {
     @FocusState var leftTyping
     @FocusState var rightTyping
     
+    let currencyTip = CurrencyTip()
+    
     var body: some View {
         ZStack {
             Image(.background)
                 .resizable()
                 .ignoresSafeArea()
+                .onTapGesture {
+                    leftTyping = false
+                    rightTyping = false
+                }
             VStack {
                 Image(.prancingpony)
                     .resizable()
@@ -27,47 +34,25 @@ struct ContentView: View {
                     .font(.title)
                     .foregroundColor(.white)
                 HStack {
-                    VStack {
-                        HStack {
-                            Image(leftCurrency.image)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 33)
-                            Text(leftCurrency.name)
-                                .font(.headline)
-                                .foregroundColor(.white)
-                        }
-                        .padding(.bottom, -5)
-                        .onTapGesture {
-                            showSelectCurrency.toggle()
-                        }
+                    CurrencyInputView(
+                        amount: $leftAmount,
+                        currency: $leftCurrency,
+                        isTyping: $leftTyping
                         
-                        TextField("Amount", text: $leftAmount)
-                            .textFieldStyle(.roundedBorder)
-                            .focused($leftTyping)
+                    ) {
+                        showSelectCurrency.toggle()
                     }
                     
                     Image(systemName: "equal")
                         .font(.largeTitle)
                         .foregroundStyle(.white)
-                    VStack {
-                        HStack {
-                            Text(rightCurrency.name)
-                                .font(.headline)
-                                .foregroundColor(.white)
-                            Image(rightCurrency.image)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 33)
-                        }
-                        .padding(.bottom, -5)
-                        .onTapGesture {
-                            showSelectCurrency.toggle()
-                        }
-                        TextField("Amount", text: $rightAmount)
-                            .textFieldStyle(.roundedBorder)
-                            .focused($rightTyping)
-                            .multilineTextAlignment(.trailing)
+                    CurrencyInputView(
+                        amount: $rightAmount,
+                        currency: $rightCurrency,
+                        isTyping: $rightTyping,
+                        textAlignment: .trailing
+                    ) {
+                        showSelectCurrency.toggle()
                     }
                 }
                 .padding()
@@ -87,6 +72,9 @@ struct ContentView: View {
                     .padding(.trailing)
                 }
             }
+        }
+        .task {
+            try? Tips.configure()
         }
         .onChange(of: leftAmount) {
             if leftTyping {
@@ -116,3 +104,36 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
+struct CurrencyInputView: View {
+    @Binding var amount: String
+    @Binding var currency: Currency
+    @FocusState.Binding var isTyping: Bool
+    var textAlignment: TextAlignment = .leading
+    var onTapCurrency: () -> Void
+
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Image(currency.image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 33)
+                Text(currency.name)
+                    .font(.headline)
+                    .foregroundColor(.white)
+            }
+            .padding(.bottom, -5)
+            .onTapGesture {
+                onTapCurrency()
+            }
+            
+            TextField("Amount", text: $amount)
+                .textFieldStyle(.roundedBorder)
+                .focused($isTyping)
+                .multilineTextAlignment(textAlignment)
+        }
+    }
+}
+
